@@ -5,7 +5,7 @@ const BodyPanel = () => {
     <div
       id="grid-wrapper-manage"
       className="grid-wrapper manage"
-      style={{ height: "789px", width: "900px" }}
+      style={{ height: "789px", width: "900px", position: 'relative' }}
     >
       <div id="grid-manage" className="grid ag-theme-balham">
         <div className="ag-root-wrapper ag-layout-normal ag-ltr">

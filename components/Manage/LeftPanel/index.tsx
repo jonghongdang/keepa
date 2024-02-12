@@ -7,7 +7,7 @@ import Setting from "./Setting";
 
 const index = () => {
   return (
-    <div id="grid-tools-fab-manage" className="grid-wrapper-tools-fab">
+    <div id="grid-tools-fab-manage" className="grid-wrapper-tools-fab" style={{ position: 'relative' }}>
       <ul className="tools-fab-floating">
         <Search></Search>
         <Sort></Sort>

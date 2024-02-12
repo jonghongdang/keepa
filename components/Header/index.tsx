@@ -3,6 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import $ from 'jquery';
 
 export default function Header() {
     const pathname = usePathname()
@@ -14,8 +15,12 @@ export default function Header() {
     const [data, setData] = useState<boolean>(false)
     const [features, setFeatures] = useState<boolean>(false)
     useEffect(() => {
-
-        if (pathname == '/tracking' || pathname == '/manage' || pathname == '/information' || pathname == '/import') {
+        setTracking(false)
+        setAddon(false)
+        setData(false)
+        setFeatures(false)
+        setViewSubPanel(false)
+        if (pathname == '/tracking' || pathname == '/manage' || pathname == '/notification' || pathname == '/import') {
             setTracking(true)
             setBackground("linear-gradient(rgba(147, 84, 73, 0.8) 0px, rgba(255, 74, 74, 0.6) 100%) rgba(0, 0, 0, 0.27)")
         }
@@ -31,9 +36,22 @@ export default function Header() {
             setFeatures(true)
             setBackground("linear-gradient(rgba(149, 103, 47, 0.8) 0px, rgba(255, 140, 0, 0.4) 100%) rgba(0, 0, 0, 0.27)")
         }
-        setViewSubPanel(pathname == '/deals' || pathname == '/');
+        setViewSubPanel(pathname == '/deals' || pathname == '/' || pathname == '/discuss');
 
     }, [pathname, searchParams])
+
+    useEffect(() => {
+        const items: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('ul li a');
+        items.forEach((item: HTMLAnchorElement) => {
+            item.addEventListener('mouseover', function (e) {
+
+            });
+
+            item.addEventListener('click', function (e) {
+
+            });
+        });
+    }, []);
     return <div className="flex topPanel unselectable px-[20px]" id="topPanel">
         <div id="logo" className="flex w-[200px] ">
             <Image src="/logo.svg" alt="logo" width={195} height={56} />
@@ -137,90 +155,104 @@ export default function Header() {
                 <span id="userMenuOverlay" style={{ display: "none" }}></span>
             </div>
         </div>
-        {/* {viewSubPanel &&
-            ( */}
-        <div id="subPanel" className="subPanel unselectable" style={{ marginTop: "80px", background: `${background}` }}>
-            <span id="searchBar" style={{ display: "none", opacity: 1 }}>
-                <form id="searchBarForm" method="post">
-                    <input type="text" rel="search" className="ui-autocomplete-input" autoComplete="off" maxLength={1000} name="search" id="searchInput" placeholder="Search for products" />
-                    <i id="submitSearch" className="fa fa-search"></i>
-                </form>
-            </span>
-            {tracking &&
-                (<ul className="subMenu" rel="tracking" >
-                    <li>
-                        <Link href="manage" ><span>Tracking Overview</span></Link>
-                    </li>
-                    <li>
-                        <Link href="import" ><span>Wish Lists</span></Link>
-                    </li>
-                    <li>
-                        <Link href="notification" >
-                            <span>Recent Notifications</span>
-                        </Link>
-                    </li>
-                </ul>)
-            }
-            {addon && (
-                <ul className="subMenu" rel="addon">
-                    <li>
-                        <Link href="addon" ><span>Browser extensions</span></Link>
-                    </li>
-                    <li>
-                        <Link href="app" ><span>Mobile App</span></Link>
-                    </li>
+        {!viewSubPanel &&
+            (
+                <div id="subPanel" className="subPanel unselectable" style={{ marginTop: "80px", background: `${background}` }}>
+                    <span id="searchBar" style={{ display: "none", opacity: 1 }}>
+                        <form id="searchBarForm" method="post">
+                            <input type="text" rel="search" className="ui-autocomplete-input" autoComplete="off" maxLength={1000} name="search" id="searchInput" placeholder="Search for products" />
+                            <i id="submitSearch" className="fa fa-search"></i>
+                        </form>
+                    </span>
+                    {tracking &&
+                        (<ul className="subMenu" rel="tracking" >
+                            <li>
+                                <Link href="manage" ><span>Tracking Overview</span></Link>
+                            </li>
+                            <li>
+                                <Link href="import" ><span>Wish Lists</span></Link>
+                            </li>
+                            <li>
+                                <Link href="notification" >
+                                    <span>Recent Notifications</span>
+                                </Link>
+                            </li>
+                        </ul>)
+                    }
+                    {addon && (
+                        <ul className="subMenu" rel="addon">
+                            <li>
+                                <Link href="addon" ><span>Browser extensions</span></Link>
+                            </li>
+                            <li>
+                                <Link href="app" ><span>Mobile App</span></Link>
+                            </li>
 
-                    <li className="menuDataAPI">
-                        <Link href="api" ><span>Keepa API</span></Link>
-                    </li>
-                </ul>
+                            <li className="menuDataAPI">
+                                <Link href="api" ><span>Keepa API</span></Link>
+                            </li>
+                        </ul>
+                    )
+                    }
+                    {data && (
+                        <ul className="subMenu" rel="data">
+                            <li>
+                                <Link href="finder" ><span>Product Finder</span></Link>
+                            </li>
+                            <li>
+                                <Link href="viewer" ><span>Product Viewer</span></Link>
+                            </li>
+                            <li>
+                                <Link href="bestseller" ><span>Product Best Sellers</span></Link>
+                            </li>
+                            <li>
+                                <Link href="topseller" ><span>Top Seller List</span></Link>
+                            </li>
+                            <li>
+                                <Link href="sellerlookup" ><span>Seller Lookup</span></Link>
+                            </li>
+                            <li>
+                                <Link href="categorytree" ><span>Category Tree</span></Link>
+                            </li>
+                            <li className="menuDataAPI">
+                                <Link href="api" ><span>Keepa API</span></Link>
+                            </li>
+                        </ul>
+                    )
+                    }
+                    {features && (
+                        <ul className="subMenu" rel="features">
+                            <li>
+                                <Link href="features" ><span>Site features</span></Link>
+                            </li>
+                            <li>
+                                <Link href="faq" ><span>FAQ</span></Link>
+                            </li>
+                            <li>
+                                <Link href="news" ><span>News</span></Link>
+                            </li>
+                            <li>
+                                <Link href="disclaimer" ><span>Disclaimer</span></Link>
+                            </li>
+                        </ul>
+                    )
+                    }
+                </div>
             )
-            }
-            {data && (
-                <ul className="subMenu" rel="data">
-                    <li>
-                        <Link href="finder" ><span>Product Finder</span></Link>
-                    </li>
-                    <li>
-                        <Link href="viewer" ><span>Product Viewer</span></Link>
-                    </li>
-                    <li>
-                        <Link href="bestseller" ><span>Product Best Sellers</span></Link>
-                    </li>
-                    <li>
-                        <Link href="topseller" ><span>Top Seller List</span></Link>
-                    </li>
-                    <li>
-                        <Link href="sellerlookup" ><span>Seller Lookup</span></Link>
-                    </li>
-                    <li>
-                        <Link href="categorytree" ><span>Category Tree</span></Link>
-                    </li>
-                    <li className="menuDataAPI">
-                        <Link href="api" ><span>Keepa API</span></Link>
-                    </li>
-                </ul>
-            )
-            }
-            {features && (
-                <ul className="subMenu" rel="features">
-                    <li>
-                        <Link href="features" ><span>Site features</span></Link>
-                    </li>
-                    <li>
-                        <Link href="faq" ><span>FAQ</span></Link>
-                    </li>
-                    <li>
-                        <Link href="news" ><span>News</span></Link>
-                    </li>
-                    <li>
-                        <Link href="disclaimer" ><span>Disclaimer</span></Link>
-                    </li>
-                </ul>
-            )
-            }
-        </div>
-        {/* )
-        } */}
+        }
     </div>
 }
+
+// export default function login(req: Request, res: Response) {
+//     // YOu can handle your login action
+//     res.json({
+//         status: "success",
+//         data: {
+//             token: "blablala",
+//             user: {
+//                 username: "cmg00823",
+//                 name: "Evan You"
+//             }
+//         }
+//     })
+// }
